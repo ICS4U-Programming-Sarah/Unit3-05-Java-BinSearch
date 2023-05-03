@@ -2,18 +2,18 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Scanner;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 /**
- * This program uses recursion to reverse,
- * a set of strings.
+ * This program uses recursion to search,
+ * number in set of array.
  *
  * @author  Sarah Andrew
  * @version 1.0
  *
- * @since 2023-13-04.
+ * @since 2023-02-05.
  */
 
 public final class RecBinSearch {
@@ -42,7 +42,7 @@ public final class RecBinSearch {
         // Create a list of strings.
         final List<String> listOfStrings =
                 new ArrayList<String>();
-        
+
         // Declare variable
         String stringList;
 
@@ -68,30 +68,34 @@ public final class RecBinSearch {
             // Convert all elements in array to integers.
             // To do so, loop through each element & convert
             // each string.
-            final String[] nums = arrayOfStr[0].split(" ");
-            final int[] arrayNum = new int[nums.length];
-            for (int counter = 0; counter < nums.length; counter++) {
-                arrayNum[counter] = Integer.parseInt(nums[counter]);
-            }
+            for (int counter = 0; counter < arrayOfStr.length;
+                    counter = counter + 2) {
+                final String[] nums = arrayOfStr[counter].split(" ");
+                final int[] arrayNum = new int[nums.length];
+                for (int counter2 = 0; counter2 < nums.length; counter2++) {
+                    arrayNum[counter2] = Integer.parseInt(nums[counter2]);
 
-            // Read the number to be searched from the second line.
-            final int numSearch = Integer.parseInt(arrayOfStr[1].trim());
+                }
+                // Sort the array.
+                java.util.Arrays.sort(arrayNum);
 
-            // Sort the array.
-            java.util.Arrays.sort(arrayNum);
+                // Read the number to be searched from the second line.
+                final int numSearch =
+                    Integer.parseInt(arrayOfStr[counter + 1].trim());
 
-            // Call function.
-            final int recSearch = recBinSearch(arrayNum, numSearch,
+                // Call function.
+                final int recSearch = recBinSearch(arrayNum, numSearch,
                     0, arrayNum.length - 1);
-            
-            // Display to user & write to console.
-            System.out.print(recSearch);
-            write.println(recSearch);
+
+                // Display to console & write to file.
+                System.out.println(recSearch);
+                write.println(recSearch);
+            }
 
             // Closes scanner & writer.
             write.close();
             sc.close();
-        
+
         } catch (IOException error) {
             // Displays error to user.
             System.out.println("An error occurred: "
@@ -103,31 +107,34 @@ public final class RecBinSearch {
     * This function uses recursion to
     * find the search of number.
     *
-    * @param aNum passed
-    * @return recFactorial.
+    * @param listNum passed
+    * @param searchNum passed.
+    * @param left passed.
+    * @param right passed.
+    * @return recBinSearch.
     */
-
     public static int recBinSearch(int[] listNum, int searchNum,
             int left, int right) {
-            // Defines base case.
-            if (left > right) {
-                // Return -1 as left gets bigger than
-                // right, meaning an error has occurred.
-                return -1;
-            }
-            // Declare variable.
-            int midNum = (left + right) / 2;
+        // Defines base case.
+        if (left > right) {
+            // Return -1 as left gets bigger than
+            // right, meaning an error has occurred.
+            return -1;
+        }
 
-            // If element found, return searchNum.
-            if (listNum[midNum] == searchNum) {
-                return midNum;
-            } else if (searchNum < listNum[midNum]) {
-                // Calls function recursively, searching left side.
-                return recBinSearch(listNum, searchNum, left, midNum - 1);
-            } else {
-                // Calls function recursively, searching the right side.
-                return recBinSearch(listNum, searchNum, midNum + 1, right);
-            }
+        // Declare variable.
+        final int midNum = (left + right) / 2;
+
+        // If element found, return midNum.
+        if (listNum[midNum] == searchNum) {
+            return midNum;
+        } else if (searchNum < listNum[midNum]) {
+            // Calls function recursively, searching left side.
+            return recBinSearch(listNum, searchNum, left, midNum - 1);
+        } else {
+            // Calls function recursively, searching the right side.
+            return recBinSearch(listNum, searchNum, midNum + 1, right);
+        }
     }
 
 }
